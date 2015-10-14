@@ -1,7 +1,7 @@
-from . import db
+from app import db
 
 
-class User(db.model):
+class User(db.Model):
     __tablename__ = "User"
     userId = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), unique=True)
@@ -11,9 +11,9 @@ class User(db.model):
         return "user name %s" % (self.username)
 
 
-class Role(db.model):
+class Role(db.Model):
     __tablename__ = "Roles"
-    id = db.Column(db.integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32), unique=True)
     users = db.relationship("User", backref="role")
 

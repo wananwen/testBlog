@@ -1,6 +1,8 @@
 import os
 
-basedir = os.path.basedir(os.path.dirname(__file__))
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+
 
 
 class Config:
@@ -19,19 +21,19 @@ class DevelopmentConfig(Config):
 
 class TestConfig(Config):
     TESTING = True
-    SQLCHEMY_DATABASE_UTI = os.environ.get("TEST_DATABASE_URL") or \
+    SQLALCHEMY_DATABASE_URI = os.environ.get("TEST_DATABASE_URL") or \
         "sqlite:///" + os.path.join(basedir, "data_test.sqlite")
 
 
 class ProductionConfig(Config):
-    SQLCHEMY_DATABSE_URI = os.environ.get("DATABASE_URL") or \
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or \
     "sqlite:///" + os.path.join(basedir, "data.sqlite")
 
 
 config = {
-    "development" : DevelopmentConfig
-    "testing" : TestConfig
-    "production" : ProductionConfig
+    "development" : DevelopmentConfig,
+    "testing" : TestConfig,
+    "production" : ProductionConfig,
     "default" : DevelopmentConfig
 
 }
