@@ -1,27 +1,26 @@
 
 from flask import Blueprint
 from flask import render_template
-from flask.ext.wtf import Form
-from wtforms import StringField, SubmitField
-from wtforms.validators import Required
-from flask import session, redirect, url_for, flash
+from flask import session, redirect, url_for
+from app.forms.login import NameForm
+from app import db
+from app.model.base import User
 
 
-base_bp = Blueprint("base", __name__)
+bp = Blueprint("base", __name__)
 
 
-class NameForm(Form):
-    name = StringField('What is your name?', validators=[Required()])
-    submit = SubmitField('Submit')
-
-
-@base_bp.route("/base", methods=['GET', 'POST'])
+@bp.route("/", methods=['GET', 'POST'])
 def base():
     form = NameForm()
     if form.validate_on_submit():
-        old_name = session.get('name')
-        if old_name is not None and old_name != form.name.data:
-            flash('Looks like you have changed your name!')
-        session['name'] = form.name.data
-        return redirect(url_for('/base'))
-    return render_template('base.html', form=form, name=session.get('name'))
+        user = User.query.filter_by(username=form.name.data).first()
+        if user is None:
+            user = User(username=form.name.data)
+            db.session.add(user)
+            session['know'] = False
+        else:
+            session['know'] = True
+        session['name'] = user
+        return redirect(url_for('.base'))
+    return render_template('index.html', form=form, name=session.get('name'))
