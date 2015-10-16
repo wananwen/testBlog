@@ -1,7 +1,6 @@
 from flask.ext.script import Manager
 from app import create_app
-from app import db
-from app.model.base import Role, User
+from app.model.base import db, Role, User
 
 app = create_app("development")
 manager = Manager(app)

@@ -1,13 +1,13 @@
 from config import config
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
 from app.control import base
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.moment import Moment
+from app.model.base import db
+
 
 moment = Moment()
 bootstrap = Bootstrap()
-db = SQLAlchemy()
 
 
 def create_app(config_name):

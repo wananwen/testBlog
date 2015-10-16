@@ -2,9 +2,8 @@
 from flask import Blueprint
 from flask import render_template
 from flask import session, redirect, url_for
-from app.forms.login import NameForm
-from app import db
-from app.model.base import User
+from ..forms.login import NameForm
+from ..model.base import db, User
 
 
 bp = Blueprint("base", __name__)
@@ -24,3 +23,13 @@ def base():
         session['name'] = user
         return redirect(url_for('.base'))
     return render_template('index.html', form=form, name=session.get('name'))
+
+
+def test():
+    from .. import create_app
+    app = create_app("development")
+    app.run()
+
+if __name__ == "__main__":
+   test()
+    
