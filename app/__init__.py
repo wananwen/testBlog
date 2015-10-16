@@ -4,6 +4,7 @@ from app.control import base
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.moment import Moment
 from app.model.base import db
+from app.control import auth
 
 
 moment = Moment()
@@ -15,6 +16,12 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     bootstrap.init_app(app)
     db.init_app(app)
+    auth.loginManager.init_app(app)
     moment.init_app(app)
-    app.register_blueprint(base.bp)
+    register_app(app)
     return app
+
+
+def register_app(app):
+    app.register_blueprint(base.bp)
+    app.register_blueprint(auth.bp, url_prefix='/auth')

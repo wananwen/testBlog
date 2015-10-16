@@ -2,7 +2,7 @@
 from flask import Blueprint
 from flask import render_template
 from flask import session, redirect, url_for
-from ..forms.login import NameForm
+from ..forms.base_forms import NameForm
 from ..model.base import db, User
 
 
