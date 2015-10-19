@@ -17,18 +17,18 @@ def create_db():
 
 
 @manager.command
-def add_a_column(add_name, column):
+def add_a_column(add_name, column, email="gudengguzhou@163.com", passwd="cat"):
     tmp = None
     if column == "Role":
         tmp = Role(name=add_name)
     elif column == "User":
         tmp = User(username=add_name)
+        print(tmp.userId)
     else:
         print("the second param must 'Role' or 'User'")
     if tmp is not None:
         db.session.add(tmp)
         db.session.commit()
-        print("id = %s" % (tmp.id))
 
 
 @manager.command

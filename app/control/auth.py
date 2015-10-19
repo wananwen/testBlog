@@ -4,6 +4,7 @@ from flask.ext.login import login_user, LoginManager, logout_user
 from flask.ext.login import login_required
 from ..forms import login_forms
 from ..model.base import User
+from .. import db
 
 loginManager = LoginManager()
 loginManager.session_protection = "Stong"
@@ -16,12 +17,27 @@ auth_bp = Blueprint("auth", __name__)
 def login():
     form = login_forms.loginForm()
     if form.validate_on_submit():
+        db.session.rollback()
         user = User.query.filter_by(email=form.email.data).first()
-        if user is not None and user.verity_passwd(form.password.data):
+        flash(User.verity_passwd('123'))
+        if user is not None and User.verity_passwd(form.password.data):
             login_user(user, form.remerber_me.data)
             return redirect(request.arg.get('next') or url_for('base.base'))
         flash("invalid username or password")
+        return redirect(url_for('.register'))
     return render_template("auth/login.html", form=form)
+
+
+@auth_bp.route('/register', methods=['GET', 'POST'])
+def register():
+    form = login_forms.registerForm()
+    if form.validate_on_submit():
+        user = User(email=form.email.data, username=form.username.data,
+                    passwd=form.passwd.data)
+        db.session.add(user)
+        flash('you can login now')
+        return redirect(url_for('.login'))
+    return render_template('auth/register.html', form=form)
 
 
 @auth_bp.route("/logOut", methods=["POST", "GET"])
