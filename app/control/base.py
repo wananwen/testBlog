@@ -6,10 +6,10 @@ from ..forms.base_forms import NameForm
 from ..model.base import db, User
 
 
-bp = Blueprint("base", __name__)
+base_bp = Blueprint("base", __name__)
 
 
-@bp.route("/", methods=['GET', 'POST'])
+@base_bp.route("/", methods=['GET', 'POST'])
 def base():
     form = NameForm()
     if form.validate_on_submit():
@@ -23,13 +23,3 @@ def base():
         session['name'] = user
         return redirect(url_for('.base'))
     return render_template('index.html', form=form, name=session.get('name'))
-
-
-def test():
-    from .. import create_app
-    app = create_app("development")
-    app.run()
-
-if __name__ == "__main__":
-   test()
-    
