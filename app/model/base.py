@@ -12,7 +12,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(32), unique=True)
     role_id = db.Column(db.Integer, db.ForeignKey("Roles.id"))
     passwd_hash = db.Column(db.String(128))
-    email = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(128), unique=True)
 
     @property
     def passwd(self):

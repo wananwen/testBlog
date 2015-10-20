@@ -3,7 +3,7 @@ from flask import render_template, redirect, url_for, flash, request
 from flask.ext.login import login_user, LoginManager, logout_user
 from flask.ext.login import login_required
 from ..forms import login_forms
-from ..model.base import User, Role
+from ..model.base import User
 from .. import db
 
 loginManager = LoginManager()
@@ -32,10 +32,7 @@ def register():
     if form.validate_on_submit():
         user = User(email=form.email.data, username=form.username.data,
                     passwd=form.passwd.data)
-        role = Role(name='LiLi')
-        db.session.add(role)
         db.session.add(user)
-        db.session.commit()
         flash('you can login now')
         return redirect(url_for('.login'))
     return render_template('auth/register.html', form=form)
